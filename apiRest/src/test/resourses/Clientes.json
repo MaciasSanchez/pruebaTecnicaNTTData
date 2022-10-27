@@ -1,0 +1,22 @@
+[
+  {
+    "nombreCompleto": "Jose Lema",
+    "genero": "MASCULINO",
+    "edad": 30,
+    "identificacion": "098254785",
+    "direccion": "Otavalo sn y principal",
+    "telefono": "098254785",
+    "contrasenia": "1234",
+    "estado": true
+  },
+  {
+    "nombreCompleto": "Juan Osorio",
+    "genero": "MASCULINO",
+    "edad": 30,
+    "identificacion": "098874587",
+    "direccion": "13 junio y Equinoccial ",
+    "telefono": "098254785",
+    "contrasenia": "12344",
+    "estado": true
+  }
+]

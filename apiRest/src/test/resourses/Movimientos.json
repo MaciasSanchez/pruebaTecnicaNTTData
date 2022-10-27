@@ -1,0 +1,26 @@
+[
+	{
+		"id": 0,
+		"nombres": "Prueba 1",
+		"genero": "Femenino",
+		"edad": 22,
+		"identificacion": "99999999998",
+		"direccion": "Amazonas y NNUU",
+		"telefono": "1234567890",
+		"clienteId": "cc181f01-002d-4ed5-b370-91feeb75c657",
+		"contrasenia": "5678",
+		"estado": true
+	},
+	{
+		"id": 0,
+		"nombres": "Prueba 2",
+		"genero": "Masculino",
+		"edad": 22,
+		"identificacion": "9999999999",
+		"direccion": "13 junio y Equinoccial",
+		"telefono": "098874587",
+		"clienteId": "cc181f01-002d-4ed5-b370-91feeb75c658",
+		"contrasenia": "12345",
+		"estado": true
+	}
+]

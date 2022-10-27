@@ -1,0 +1,572 @@
+{
+	"info": {
+		"_postman_id": "086315a7-8d0c-4e33-b429-ce03771d7445",
+		"name": "API REST NTT DATA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "crearCliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Jose Lema\",\n  \"genero\": \"MASCULINO\",\n  \"edad\": 30,\n  \"identificacion\": \"098254785\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"contrasenia\": \"1234\",\n  \"estado\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarClientes",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\":\"62dff063-8c81-4205-8315-6e15a9419818\",\n  \"nombreCompleto\": \"Jose Lema\",\n  \"genero\": \"MASCULINO\",\n  \"edad\": 30,\n  \"identificacion\": \"098254785\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"contrasenia\": \"1234\",\n  \"estado\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarClientes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaClientePorIdentificacion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/clientes/:numIdentificacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"clientes",
+								":numIdentificacion"
+							],
+							"variable": [
+								{
+									"key": "numIdentificacion",
+									"value": "098254785"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarCliente",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/cuentas/:clienteId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas",
+								":clienteId"
+							],
+							"variable": [
+								{
+									"key": "clienteId",
+									"value": "62dff063-8c81-4205-8315-6e15a9419818"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "crearCuenta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"numeroDeCuenta\": \"585545\",\n  \"identificacion\": \"098254785\",\n  \"cliente\": \"Jose Lema\",\n  \"tipoCuenta\": \"CORRIENTE\",\n  \"saldoInicial\": 1000,\n  \"estado\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/cuentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarCuentaPorNumero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/cuentas/numero/:numCuenta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas",
+								"numero",
+								":numCuenta"
+							],
+							"variable": [
+								{
+									"key": "numCuenta",
+									"value": "585545"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarCuenta",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/cuentas/:cuentaId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas",
+								":cuentaId"
+							],
+							"variable": [
+								{
+									"key": "cuentaId",
+									"value": "62dff063-8c81-4205-8315-6e15a9419818"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarCuenta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"d41e09ab-4653-4048-81dc-b01435ec0b97\",\n    \"numeroDeCuenta\": \"478758\",\n    \"identificacion\": \"098254785\",\n    \"cliente\": \"Jose Lema\",\n    \"tipoCuenta\": \"AHORROS\",\n    \"saldoInicial\": 2000,\n    \"estado\": true\n  }"
+						},
+						"url": {
+							"raw": "http://localhost:8003/cuentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultarCuentas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/cuentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConsultarCuentasPorIdentificacion",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/cuentas/cliente/:numIdentificacion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"cuentas",
+								"cliente",
+								":numIdentificacion"
+							],
+							"variable": [
+								{
+									"key": "numIdentificacion",
+									"value": "098254785"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "crearMovimiento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fecha\": \"2022-10-27T15:53:34.145Z\",\n  \"numeroDeCuenta\": \"478758\",\n  \"tipo\": \"AHORROS\",\n  \"estado\": true,\n  \"tipoMovimiento\": \"RETIRO\",\n  \"movimiento\": 575\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/movimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaMovimientosPorFechas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/:fechaDesde/:fechaHasta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								":fechaDesde",
+								":fechaHasta"
+							],
+							"variable": [
+								{
+									"key": "fechaDesde",
+									"value": "2022-10-27"
+								},
+								{
+									"key": "fechaHasta",
+									"value": "2022-10-27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaEstadoCuenta",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/reportes/:identificacion/:fechaDesde/:fechaHasta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"reportes",
+								":identificacion",
+								":fechaDesde",
+								":fechaHasta"
+							],
+							"variable": [
+								{
+									"key": "identificacion",
+									"value": "098254785"
+								},
+								{
+									"key": "fechaDesde",
+									"value": "2022-10-27"
+								},
+								{
+									"key": "fechaHasta",
+									"value": "2022-10-27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaMovimientosPorIdentificacionFechas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/cliente/:identificacion/:fechaDesde/:fechaHasta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"cliente",
+								":identificacion",
+								":fechaDesde",
+								":fechaHasta"
+							],
+							"variable": [
+								{
+									"key": "identificacion",
+									"value": "098254785"
+								},
+								{
+									"key": "fechaDesde",
+									"value": "2022-10-27"
+								},
+								{
+									"key": "fechaHasta",
+									"value": "2022-10-27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarMovimiento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"f164ee2b-995f-468e-83fd-163192c7395d\",\n  \"fecha\": \"2022-10-27T15:53:34.145Z\",\n  \"cliente\": \"Jose Lema\",\n    \"identificacionCliente\": null,\n    \"numeroDeCuenta\": null,\n    \"tipo\": \"AHORROS\",\n    \"saldoInicial\": 2000,\n    \"estado\": true,\n    \"tipoMovimiento\": \"RETIRO\",\n    \"movimiento\": -575,\n    \"saldoDisponible\": 1425\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/movimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarMovimiento",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/:movimientoId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								":movimientoId"
+							],
+							"variable": [
+								{
+									"key": "movimientoId",
+									"value": "f164ee2b-995f-468e-83fd-163192c7395d"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
