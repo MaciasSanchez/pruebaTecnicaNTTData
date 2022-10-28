@@ -112,7 +112,7 @@ class CuentaControllerTest {
 		testCrearCuenta();		
 		
 		List<Cuenta> cuentas = cuentaRepo.consultarCuentaPorNumeroIdentificacion("098254785");
-		cuentas.get(0);
+		
 		this.mockMvc
 				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(CuentaConvert.modelToType(cuentas.get(0))))
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
