@@ -18,39 +18,38 @@ import com.nttdata.ws.prueba.utils.ClienteConvert;
 import com.nttdata.ws.prueba.utils.exceptions.BusinessException;
 import com.nttdata.ws.prueba.utils.exceptions.TipoError;
 
-
 /**
  * @author Angelica
  *
  */
 @Service
 public class ClienteSvc implements IClienteSvc {
-	
+
 	@Autowired
 	IClienteRepository clienteRepository;
 
-
 	@Override
 	public ClienteType crearCliente(ClienteType clienteType) {
+		clienteType.setClienteId(UUID.randomUUID());
 		Cliente cliente = clienteRepository.save(ClienteConvert.typeToModel(clienteType));
 		return ClienteConvert.modelToType(cliente);
 	}
-	
+
 	@Override
 	public ClienteType actualizarCliente(ClienteType clienteType) throws BusinessException {
-		UUID clienteId = clienteType.getId();
-		if (clienteRepository.findById(clienteId).isPresent()) {
-			String numIdentificacion = clienteRepository.findByIdentificacion(clienteId);
+		Cliente cliente = null;
+		UUID id = clienteType.getId();
+		if (clienteRepository.findById(id).isPresent()) {
+			//valida que no se pueda ingresar un numero de identificacion previamente registrado
+			String numIdentificacion = clienteRepository.findByIdentificacion(id);
 			if (!(numIdentificacion.equals(clienteType.getIdentificacion().toUpperCase()))
 					&& clienteRepository.existsIdentificacion(clienteType.getIdentificacion().toUpperCase())) {
-				throw new BusinessException(
-						String.format("El num. identificación: [%s] ya se encuentra registrado", clienteType.getIdentificacion()),
-						TipoError.SOLICITUD_INVALIDA);
+				throw new BusinessException(String.format("El num. identificación: [%s] ya se encuentra registrado",
+						clienteType.getIdentificacion()), TipoError.SOLICITUD_INVALIDA);
 			}
-			Cliente cliente = clienteRepository.save(ClienteConvert.typeToModel(clienteType));
-			return ClienteConvert.modelToType(cliente);
+			cliente = clienteRepository.save(ClienteConvert.typeToModel(clienteType));
 		}
-		return null;
+		return ClienteConvert.modelToType(cliente);
 	}
 
 	@Override
@@ -67,9 +66,6 @@ public class ClienteSvc implements IClienteSvc {
 		return recursoBorrado;
 	}
 
-
-
-
 	@Override
 	public Cliente consultarClientePorIdentificacion(String numIdentificacion) throws BusinessException {
 		Cliente cliente = clienteRepository.consultarClientePorIdentificacion(numIdentificacion);
@@ -79,12 +75,9 @@ public class ClienteSvc implements IClienteSvc {
 		return cliente;
 	}
 
-
 	@Override
 	public List<ClienteType> consultarClientes() {
 		return ClienteConvert.listModelToType(clienteRepository.consultarClientes());
 	}
-	
-
 
 }

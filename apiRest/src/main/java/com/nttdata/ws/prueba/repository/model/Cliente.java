@@ -32,9 +32,9 @@ public class Cliente extends Persona implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
-	@Column(name="cliente_id", unique = true)
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(name="cliente_id", unique = true, nullable = false)
 	private UUID clienteId;
 	
 	@Column(name = "contrasenia")

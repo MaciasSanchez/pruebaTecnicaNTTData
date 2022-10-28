@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.ws.prueba.constants.MensajesDelServicio;
 import com.nttdata.ws.prueba.controller.contract.IClienteController;
 import com.nttdata.ws.prueba.model.ClienteType;
+import com.nttdata.ws.prueba.model.CrearUsuarioRequest;
 import com.nttdata.ws.prueba.model.RespuestaType;
 import com.nttdata.ws.prueba.repository.model.Cliente;
 import com.nttdata.ws.prueba.service.contract.IClienteSvc;
@@ -40,14 +41,14 @@ public class ClienteController implements IClienteController {
 	IClienteSvc clienteSvc;
 
 	@Override
-	public ResponseEntity<?> crearCliente(@Valid ClienteType body) {
+	public ResponseEntity<?> crearCliente(@Valid CrearUsuarioRequest body) {
 		ResponseEntity<?> respuestaCrear;
 		try {	
 			LOG.info("INICIA PROCESO DE CREAR CLIENTE");
 			ClienteType result = clienteSvc.crearCliente(body);
 			respuestaCrear = ClienteValidator.validarResultadoaByCreate(result);
 		} catch (Exception e) {
-			LOG.error("ERROR PROCESO DE CREAR CLIENTE");
+			LOG.error("ERROR PROCESO DE CREAR CLIENTE {}",e.getMessage());
 			return respuestaCrear = new ResponseEntity<>(
 					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),
 					HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,10 +67,10 @@ public class ClienteController implements IClienteController {
 			respuestaActualizar = ClienteValidator.validarResultadoaByUpdate(result, body.getId(),
 					body.getIdentificacion());
 		} catch (BusinessException e) {
-			LOG.error("ERROR DE NEGOCIO EN ACTUALIZAR CLIENTE", e.getMessage());
+			LOG.error("ERROR DE NEGOCIO EN ACTUALIZAR CLIENTE {}",e.getMessage());;
 			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
-			LOG.error("ERROR PROCESO DE ACTUALIZAR CLIENTE", e.getMessage());
+			LOG.error("ERROR PROCESO DE ACTUALIZAR CLIENTE {}",e.getMessage());
 			return new ResponseEntity<>(new RespuestaType().codigoRespuesta("500").descripcion("ERROR INTERNO"),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}

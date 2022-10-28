@@ -14,12 +14,15 @@ import com.nttdata.ws.prueba.utils.exceptions.BusinessException;
  *
  */
 public interface IClienteSvc {
-	
-	ClienteType crearCliente (ClienteType clienteType)throws BusinessException;
-	ClienteType actualizarCliente (ClienteType clienteType)throws BusinessException;
-	Boolean eliminarCliente(String clienteId) throws BusinessException;
-	Cliente consultarClientePorIdentificacion (String numIdentificacion) throws BusinessException;
-	List<ClienteType> consultarClientes();
 
+	ClienteType crearCliente(ClienteType clienteType) throws BusinessException;
+
+	ClienteType actualizarCliente(ClienteType clienteType) throws BusinessException;
+
+	Boolean eliminarCliente(String clienteId) throws BusinessException;
+
+	Cliente consultarClientePorIdentificacion(String numIdentificacion) throws BusinessException;
+
+	List<ClienteType> consultarClientes();
 
 }

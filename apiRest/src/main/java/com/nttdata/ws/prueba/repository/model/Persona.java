@@ -38,7 +38,7 @@ public class Persona {
 	@Column(name = "id", unique = true)
 	private UUID id;
 	
-	@Column(name = "nombre_completo")
+	@Column(name = "nombre_completo", nullable = false)
 	private String nombreCompleto;
 	
 	@Enumerated(EnumType.STRING)
@@ -48,7 +48,7 @@ public class Persona {
 	@Column(name = "edad")
 	private int edad;
 	
-	@Column(name = "identificacion", unique = true)
+	@Column(name = "identificacion", unique = true, nullable = false)
 	private String identificacion;
 	
 	@Column(name = "direccion")

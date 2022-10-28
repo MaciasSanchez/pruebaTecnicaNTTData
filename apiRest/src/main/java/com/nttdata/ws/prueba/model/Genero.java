@@ -9,9 +9,10 @@ package com.nttdata.ws.prueba.model;
  */
 public enum Genero {
 	
-	MASCULINO("MASCULINO"),
+	NO_DEFINIDO("NO_DEFINIDO"),
 	FEMENINO("FEMENINO"),
-	NEUTRO("NEUTRO");
+	MASCULINO("MASCULINO");
+	
 	
 	private String value;
 	

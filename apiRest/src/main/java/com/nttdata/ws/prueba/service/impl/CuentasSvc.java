@@ -24,44 +24,53 @@ import com.nttdata.ws.prueba.utils.exceptions.TipoError;
  */
 @Service
 public class CuentasSvc implements ICuentasSvc {
-	
+
 	@Autowired
 	ICuentaRepository cuentaRepository;
-
 
 	@Override
 	public CuentaType crearCuenta(CuentaType cuentaType) throws BusinessException {
 		String identificacion = cuentaType.getIdentificacion().trim();
+		String numCuenta = cuentaType.getNumeroDeCuenta().trim();
 		String nombreCliente = cuentaRepository.consultaIdentificacion(identificacion);
 		if (!(identificacion.equals(cuentaRepository.consultaIdentificacionCliente(identificacion)))) {
 			throw new BusinessException(
-					String.format("El cliente con número de identificación: [%s] no se encuentra registrado", cuentaType.getNumeroDeCuenta()),
+					String.format("El cliente con número de identificación: [%s] no se encuentra registrado",
+							cuentaType.getNumeroDeCuenta()),
 					TipoError.SOLICITUD_INVALIDA);
-		}else {
-			cuentaType.setCliente(nombreCliente);
-			Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
-			return CuentaConvert.modelToType(cuenta);
-		}
-  }
+		} else {
 
+			List<Cuenta> cuentas = (List<Cuenta>) cuentaRepository.consultarCuentas();
+			for (Cuenta cta : cuentas) {
+				if (numCuenta.equals(cta.getNumeroDeCuenta())) {
+					throw new BusinessException(String.format("El número de cuenta: [%s] ya se encuentra registrado",
+							cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
+				}
+			}
+
+		}
+		cuentaType.setCliente(nombreCliente);
+		Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
+		return CuentaConvert.modelToType(cuenta);
+	}
 
 	@Override
 	public CuentaType actualizarCuenta(CuentaType cuentaType) throws BusinessException {
+
 		UUID cuentaId = cuentaType.getId();
 		if (cuentaRepository.findById(cuentaId).isPresent()) {
+
 			String numeroDeCuenta = cuentaRepository.findByCuentaId(cuentaId).toUpperCase();
 			if (!(numeroDeCuenta.equals(cuentaType.getNumeroDeCuenta().toUpperCase()))
-					&& cuentaRepository.existsAccountNumber (cuentaType.getNumeroDeCuenta().toUpperCase())) {
-				throw new BusinessException(
-						String.format("El num. de cuenta: [%s] ya se encuentra registrado", cuentaType.getNumeroDeCuenta()),
-						TipoError.SOLICITUD_INVALIDA);
+					&& cuentaRepository.existsAccountNumber(cuentaType.getNumeroDeCuenta().toUpperCase())) {
+				throw new BusinessException(String.format("El num. de cuenta: [%s] ya se encuentra registrado",
+						cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 			}
 			Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
 			return CuentaConvert.modelToType(cuenta);
 		}
 		return null;
 	}
-
 
 	@Override
 	public Boolean eliminarCuenta(String id) throws BusinessException {
@@ -76,13 +85,11 @@ public class CuentasSvc implements ICuentasSvc {
 
 		return recursoBorrado;
 	}
-	
 
 	@Override
 	public List<CuentaType> consultarCuentas() {
 		return CuentaConvert.listModelToType(cuentaRepository.consultarCuentas());
 	}
-
 
 	@Override
 	public Cuenta consultarCuentaPorNumero(String numeroDeCuenta) throws BusinessException {
@@ -93,12 +100,10 @@ public class CuentasSvc implements ICuentasSvc {
 		return cuenta;
 	}
 
-
 	@Override
 	public List<CuentaType> consultarCuentaPorNumeroIdentificacion(String identificacion) {
-		return CuentaConvert.listModelToType(cuentaRepository.consultarCuentaPorNumeroIdentificacion(identificacion.trim().toUpperCase()));
+		return CuentaConvert.listModelToType(
+				cuentaRepository.consultarCuentaPorNumeroIdentificacion(identificacion.trim().toUpperCase()));
 	}
-	
-
 
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nttdata.ws.prueba.constants.MensajesDelServicio;
-import com.nttdata.ws.prueba.model.DetalleMovimientosCuentas;
 import com.nttdata.ws.prueba.model.EstadoCuentaDetalladoType;
 import com.nttdata.ws.prueba.model.EstadoCuentaType;
 import com.nttdata.ws.prueba.model.MovimientosClienteType;

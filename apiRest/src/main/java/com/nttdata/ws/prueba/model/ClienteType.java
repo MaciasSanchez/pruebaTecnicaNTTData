@@ -5,7 +5,8 @@ package com.nttdata.ws.prueba.model;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Angelica
@@ -13,9 +14,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * Modelo Canonico de Persona
  *
  */
+
+
+@Getter
+@Setter
 public class ClienteType extends PersonaType{
 	
-	@JsonIgnore
 	private UUID clienteId;
 	private String contrasenia;
 	private Boolean estado;
@@ -32,49 +36,6 @@ public class ClienteType extends PersonaType{
 		this.estado = estado;
 	}
 
-
-
-	/**
-	 * @return the clienteId
-	 */
-	public UUID getClienteId() {
-		return clienteId;
-	}
-
-	/**
-	 * @param clienteId the clienteId to set
-	 */
-	public void setClienteId(UUID clienteId) {
-		this.clienteId = clienteId;
-	}
-
-	/**
-	 * @return the contrasenia
-	 */
-	public String getContrasenia() {
-		return contrasenia;
-	}
-
-	/**
-	 * @param contrasenia the contrasenia to set
-	 */
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
-	}
-
-	/**
-	 * @return the estado
-	 */
-	public Boolean getEstado() {
-		return estado;
-	}
-
-	/**
-	 * @param estado the estado to set
-	 */
-	public void setEstado(Boolean estado) {
-		this.estado = estado;
-	}
 	
 	
 }

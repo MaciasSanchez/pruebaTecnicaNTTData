@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.nttdata.ws.prueba.model.ClienteType;
+import com.nttdata.ws.prueba.model.CrearUsuarioRequest;
 import com.nttdata.ws.prueba.model.RespuestaType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public interface IClienteController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/clientes", produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8", method = RequestMethod.POST)
 	ResponseEntity<?> crearCliente(
-			@Parameter(in = ParameterIn.DEFAULT, description = "Cliente", required = true, schema = @Schema()) @Valid @RequestBody ClienteType body);
+			@Parameter(in = ParameterIn.DEFAULT, description = "Cliente", required = true, schema = @Schema()) @Valid  @RequestBody CrearUsuarioRequest body);
 
 	/**
 	 * Operación PUT para la actualización de cliente
@@ -69,15 +70,15 @@ public interface IClienteController {
 	 * @param clienteId
 	 * @return
 	 */
-	@Operation(summary = "eliminarCliente", description = "Elimina un Cliente por ID", tags = { "Clientes" })
+	@Operation(summary = "Eliminar un cliente existente por id.", description = "Elimina un Cliente por ID", tags = { "Clientes" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Boolean.class))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
-	@RequestMapping(value = "/clientes/{clienteId}", produces = "application/json; charset=UTF-8", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/clientes/{id}", produces = "application/json; charset=UTF-8", method = RequestMethod.DELETE)
 	ResponseEntity<?> eliminarCliente(
-			@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("clienteId") String clienteId);
+			@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id") String clienteId);
 
 	/**
 	 * Operación GET para obtener la inforamción del cliente por su identificación

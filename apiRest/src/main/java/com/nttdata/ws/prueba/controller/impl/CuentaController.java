@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.ws.prueba.constants.MensajesDelServicio;
 import com.nttdata.ws.prueba.controller.contract.ICuentaController;
+import com.nttdata.ws.prueba.model.CrearCuentaRequest;
 import com.nttdata.ws.prueba.model.CuentaType;
 import com.nttdata.ws.prueba.model.RespuestaType;
 import com.nttdata.ws.prueba.repository.model.Cuenta;
@@ -37,12 +38,15 @@ public class CuentaController implements ICuentaController {
 	@Autowired
 	ICuentasSvc cuentasSvc;
 	@Override
-	public ResponseEntity<?> crearCuenta(@Valid CuentaType body) {
+	public ResponseEntity<?> crearCuenta(@Valid CrearCuentaRequest body) {
 		ResponseEntity<?> respuestaCrear;
 		try {	
 			LOG.info("INICIA PROCESO DE CREAR CUENTA");
 			CuentaType result = cuentasSvc.crearCuenta(body);
 			respuestaCrear = CuentaValidator.validarResultadoaByCreate(result);
+		} catch (BusinessException e) {
+			LOG.error("ERROR DE NEGOCIO al CREAR CUENTA {}",e.getMessage());;
+			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
 			LOG.error("ERROR PROCESO DE CREAR CUENTA");
 			return respuestaCrear = new ResponseEntity<>(

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nttdata.ws.prueba.model.CrearCuentaRequest;
 import com.nttdata.ws.prueba.model.CuentaType;
 import com.nttdata.ws.prueba.model.RespuestaType;
 
@@ -33,6 +34,7 @@ public interface ICuentaController {
 
 	/**
 	 * Operación POST para la creación de cuentas
+	 * 
 	 * @param body
 	 * @return
 	 */
@@ -43,10 +45,12 @@ public interface ICuentaController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/cuentas", produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8", method = RequestMethod.POST)
 	ResponseEntity<?> crearCuenta(
-			@Parameter(in = ParameterIn.DEFAULT, description = "Cuenta", required = true, schema = @Schema()) @Valid @RequestBody CuentaType body);
+			@Parameter(in = ParameterIn.DEFAULT, description = "Cuenta", required = true, schema = @Schema()) @Valid @RequestBody CrearCuentaRequest body);
 
+	
 	/**
 	 * Operación PUT para la actualización de cuentas
+	 * 
 	 * @param body
 	 * @return
 	 */
@@ -62,6 +66,7 @@ public interface ICuentaController {
 
 	/**
 	 * Operación DELETE para la eliminar de cuentas por id
+	 * 
 	 * @param cuentaId
 	 * @return
 	 */
@@ -77,6 +82,7 @@ public interface ICuentaController {
 
 	/**
 	 * Operación GET consultar la información de la cuenta por el num. cuenta
+	 * 
 	 * @param numCuenta
 	 * @return
 	 */
@@ -92,7 +98,9 @@ public interface ICuentaController {
 			@Parameter(in = ParameterIn.PATH, description = "num.de cuenta", required = true, schema = @Schema()) @PathVariable("numCuenta") String numCuenta);
 
 	/**
-	 *  Operación GET consulta las cuentas existentes por el numero de identificación del cliente
+	 * Operación GET consulta las cuentas existentes por el numero de identificación
+	 * del cliente
+	 * 
 	 * @param numIdentificacion
 	 * @return
 	 */

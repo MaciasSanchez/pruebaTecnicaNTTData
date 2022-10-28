@@ -32,13 +32,13 @@ public class Cuenta implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@Column(name = "numero_cuenta", unique = true)
+	@Column(name = "numero_cuenta", unique = true, nullable = false)
 	private String numeroDeCuenta;
 	
-	@Column(name = "num_identificacion_cliente")
+	@Column(name = "num_identificacion_cliente", nullable = false)
 	private String identificacion;
 	
-	@Column(name = "nombre_cliente")
+	@Column(name = "nombre_cliente", nullable = false)
 	private String cliente;
 	
 	@Enumerated(EnumType.STRING)
