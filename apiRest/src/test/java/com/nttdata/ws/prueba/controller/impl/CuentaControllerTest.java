@@ -109,24 +109,12 @@ class CuentaControllerTest {
 		cuentaRepo.deleteAll();
 		clienteRepo.deleteAll();
 		
-		ClienteType cliente = objectMapper.readValue(requestClienteInput, new TypeReference<List<ClienteType>>() {
-		}).get(0);
+		testCrearCuenta();		
+		
+		List<Cuenta> cuentas = cuentaRepo.consultarCuentaPorNumeroIdentificacion("098254785");
+		cuentas.get(0);
 		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/clientes").content(objectMapper.writeValueAsString(cliente))
-						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isCreated());
-		
-		
-		Cuenta cuenta = cuentaRepo.consultarCuentaPorNumeroIdentificacion("098254785").get(0);
-		
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/clientes").content(objectMapper.writeValueAsString(CuentaConvert.modelToType(cuenta)))
-						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
-		
-		CuentaType dto = objectMapper.readValue(requestCuentaInput, new TypeReference<List<CuentaType>>() {}).get(0);
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(dto))
+				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(CuentaConvert.modelToType(cuentas.get(0))))
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
