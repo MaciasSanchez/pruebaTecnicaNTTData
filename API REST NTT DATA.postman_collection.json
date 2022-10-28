@@ -24,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nombreCompleto\": \"Jose Lema\",\n  \"genero\": \"MASCULINO\",\n  \"edad\": 30,\n  \"identificacion\": \"098254785\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"contrasenia\": \"1234\",\n  \"estado\": true\n}"
+							"raw": "{\n    \"nombreCompleto\": \"Jose Lema\",\n    \"genero\": \"MASCULINO\",\n    \"edad\": 30,\n    \"identificacion\": \"098254785\",\n    \"direccion\": \"Otavalo sn y principal\",\n    \"telefono\": \"098254785\",\n    \"contrasenia\": \"1234\",\n    \"estado\": true\n  }"
 						},
 						"url": {
 							"raw": "http://localhost:8003/clientes",
@@ -56,7 +56,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\":\"62dff063-8c81-4205-8315-6e15a9419818\",\n  \"nombreCompleto\": \"Jose Lema\",\n  \"genero\": \"MASCULINO\",\n  \"edad\": 30,\n  \"identificacion\": \"098254785\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"contrasenia\": \"1234\",\n  \"estado\": true\n}"
+							"raw": "{\n    \"id\": \"3867cdd1-8228-4d71-b2db-5f488a6cf039\",\n    \"nombreCompleto\": \"Jose Lema\",\n    \"genero\": \"MASCULINO\",\n    \"edad\": 31,\n    \"identificacion\": \"098254789\",\n    \"direccion\": \"Otavalo sn y principal \",\n    \"telefono\": \"098254785\",\n    \"clienteId\": \"c00705e1-408e-4870-99bd-7b040418bf1E\",\n    \"contrasenia\": \"1234\",\n    \"estado\": true\n  }"
 						},
 						"url": {
 							"raw": "http://localhost:8003/clientes",
@@ -179,7 +179,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"numeroDeCuenta\": \"585545\",\n  \"identificacion\": \"098254785\",\n  \"cliente\": \"Jose Lema\",\n  \"tipoCuenta\": \"CORRIENTE\",\n  \"saldoInicial\": 1000,\n  \"estado\": true\n}"
+							"raw": "{\n  \"numeroDeCuenta\": \"585545\",\n  \"identificacion\": \"098254785\",\n  \"tipoCuenta\": \"CORRIENTE\",\n  \"saldoInicial\": 1000,\n  \"estado\": true\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8003/cuentas",
