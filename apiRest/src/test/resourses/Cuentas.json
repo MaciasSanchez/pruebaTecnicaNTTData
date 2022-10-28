@@ -1,55 +1,22 @@
 [
   {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "numeroDeCuenta": "478758",
     "identificacion": "098254785",
-    "cliente": "Jose Lema",
     "tipoCuenta": "AHORROS",
     "saldoInicial": 2000,
     "estado": true
   },
   {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "numeroDeCuenta": "225487",
-    "identificacion": "097548965",
-    "cliente": "Marianela Montalvo ",
-    "tipoCuenta": "CORRIENTE",
-    "saldoInicial": 100,
-    "estado": true
-  },
-  {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "numeroDeCuenta": "495878",
     "identificacion": "098874587",
-    "cliente": "Juan Osorio",
     "tipoCuenta": "AHORROS",
     "saldoInicial": 0,
     "estado": true
   },
   {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "numeroDeCuenta": "585545",
     "identificacion": "098254785",
-    "cliente": "Jose Lema",
     "tipoCuenta": "CORRIENTE",
-    "saldoInicial": 1000,
-    "estado": true
-  },
-  {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "numeroDeCuenta": "496825",
-    "identificacion": "097548965",
-    "cliente": "Marianela Montalvo ",
-    "tipoCuenta": "AHORROS",
-    "saldoInicial": 540,
-    "estado": true
-  },
-  {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "numeroDeCuenta": "585545",
-    "identificacion": "098254785",
-    "cliente": "Jose Lema",
-    "tipoCuenta": "CORRIENTES",
     "saldoInicial": 1000,
     "estado": true
   }

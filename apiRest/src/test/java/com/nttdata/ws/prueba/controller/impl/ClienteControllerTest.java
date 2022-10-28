@@ -25,7 +25,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.ws.prueba.model.ClienteType;
-import com.nttdata.ws.prueba.model.CrearCuentaRequest;
 import com.nttdata.ws.prueba.repository.contract.IClienteRepository;
 import com.nttdata.ws.prueba.repository.model.Cliente;
 import com.nttdata.ws.prueba.utils.ClienteConvert;
@@ -117,7 +116,7 @@ class ClienteControllerTest {
 		 ClienteType cliente = ClienteConvert.modelToType(clienteRepo.consultarClientePorIdentificacion("098254785"));
 		 UUID id =  cliente.getId();
 		 this.mockMvc
-			.perform(MockMvcRequestBuilders.delete("/cuentas/{id}", id.toString())
+			.perform(MockMvcRequestBuilders.delete("/clientes/{id}", id.toString())
 					.accept(MediaType.APPLICATION_JSON))
 			.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 		 
