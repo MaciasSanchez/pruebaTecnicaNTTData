@@ -39,7 +39,7 @@ public class CuentasSvc implements ICuentasSvc {
 							cuentaType.getNumeroDeCuenta()),
 					TipoError.SOLICITUD_INVALIDA);
 		} else {
-
+			// consulta las cuentas registradas que estan con estado activo
 			List<Cuenta> cuentas = (List<Cuenta>) cuentaRepository.consultarCuentas();
 			for (Cuenta cta : cuentas) {
 				if (numCuenta.equals(cta.getNumeroDeCuenta())) {
@@ -47,7 +47,6 @@ public class CuentasSvc implements ICuentasSvc {
 							cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 				}
 			}
-
 		}
 		cuentaType.setCliente(nombreCliente);
 		Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
@@ -56,20 +55,31 @@ public class CuentasSvc implements ICuentasSvc {
 
 	@Override
 	public CuentaType actualizarCuenta(CuentaType cuentaType) throws BusinessException {
-
+		String identificacion = cuentaType.getIdentificacion().trim();
+		String numCuenta = cuentaType.getNumeroDeCuenta().toUpperCase().trim();
+		String nombreCliente = cuentaRepository.consultaIdentificacion(identificacion);
 		UUID cuentaId = cuentaType.getId();
+		// valida el id de la cuenta
 		if (cuentaRepository.findById(cuentaId).isPresent()) {
-
+			// consulta el numero de cuenta vinculado al id
 			String numeroDeCuenta = cuentaRepository.findByCuentaId(cuentaId).toUpperCase();
-			if (!(numeroDeCuenta.equals(cuentaType.getNumeroDeCuenta().toUpperCase()))
-					&& cuentaRepository.existsAccountNumber(cuentaType.getNumeroDeCuenta().toUpperCase())) {
+			//valida que no se actualice o se ingrese un numero de cuenta ya registrado anteriormente
+			if (!(numeroDeCuenta.equals(numCuenta))
+					&& cuentaRepository.existsAccountNumber(numCuenta)) {
 				throw new BusinessException(String.format("El num. de cuenta: [%s] ya se encuentra registrado",
 						cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 			}
-			Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
-			return CuentaConvert.modelToType(cuenta);
+			// valida que si el numero de identificación ingresado este registrado en la tabla de clientes
+			if (!(identificacion.equals(cuentaRepository.consultaIdentificacionCliente(identificacion)))) {
+				throw new BusinessException(
+						String.format("El cliente con número de identificación: [%s] no se encuentra registrado",
+								cuentaType.getNumeroDeCuenta()),
+						TipoError.SOLICITUD_INVALIDA);
+			}
+			cuentaType.setCliente(nombreCliente);
 		}
-		return null;
+		Cuenta cuenta = cuentaRepository.save(CuentaConvert.typeToModel(cuentaType));
+		return CuentaConvert.modelToType(cuenta);
 	}
 
 	@Override
