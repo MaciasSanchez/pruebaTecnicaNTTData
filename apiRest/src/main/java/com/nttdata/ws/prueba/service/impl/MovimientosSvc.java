@@ -60,7 +60,7 @@ public class MovimientosSvc implements IMovimientosSvc {
 
 		mov.setCliente(datosCliente.getNombreCompleto());
 		mov.setFecha(movimientosType.getFecha());
-		mov.setEstado(movimientosType.getEstado());
+		mov.setEstado(movimientosType.isEstado());
 		mov.setIdentificacionCliente(datosCliente.getIdentificacion());
 		mov.setNumeroDeCuenta(movimientosType.getNumeroDeCuenta());
 		mov.setTipo(movimientosType.getTipo());
