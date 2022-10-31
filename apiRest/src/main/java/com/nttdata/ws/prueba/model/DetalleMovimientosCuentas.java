@@ -18,7 +18,7 @@ import lombok.Setter;
 public class DetalleMovimientosCuentas {
 	
 	private String numeroDeCuenta;
-	private List<MovimientosClienteType> detalleMovimientos;
+	private List<MovimientosType> detalleMovimientos;
 	private double montoTotalDepositos;
 	private double montoTotalRetiros;
 	private double saldoDisponibleCorte;

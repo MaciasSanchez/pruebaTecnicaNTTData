@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.ws.prueba.constants.MensajesDelServicio;
 import com.nttdata.ws.prueba.controller.contract.IMovimientoController;
+import com.nttdata.ws.prueba.model.CrearMovimientoRequest;
 import com.nttdata.ws.prueba.model.EstadoCuentaDetalladoType;
 import com.nttdata.ws.prueba.model.EstadoCuentaType;
-import com.nttdata.ws.prueba.model.MovimientosClienteType;
 import com.nttdata.ws.prueba.model.MovimientosType;
 import com.nttdata.ws.prueba.model.RespuestaType;
 import com.nttdata.ws.prueba.model.TiposDeMovimiento;
@@ -41,14 +41,17 @@ public class MovimientoController implements IMovimientoController {
 	@Autowired
 	IMovimientosSvc mvtsSvc;
 	@Override
-	public ResponseEntity<RespuestaType> crearMovimiento(@Valid MovimientosType body) {
+	public ResponseEntity<RespuestaType> crearMovimiento(@Valid CrearMovimientoRequest body) {
 		ResponseEntity<RespuestaType> respuestaCrear;
 		try {	
 			LOG.info("INICIA PROCESO DE CREAR MOVIMIENTO");
 			MovimientosType result = mvtsSvc.crearMovimiento(body);
 			respuestaCrear = MovimientosValidator.validarResultadoaByCreate(result);
+		} catch (BusinessException e) {
+			LOG.error("ERROR DE NEGOCIO al CREAR MOVIMIENTO {}",e.getMessage());;
+			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
-			LOG.error("ERROR PROCESO DE CREAR MOVIMIENTO",  e.getMessage());
+			LOG.error("ERROR PROCESO DE CREAR MOVIMIENTO {}",  e.getMessage());
 			return respuestaCrear = new ResponseEntity<>(
 					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),
 					HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,7 +61,7 @@ public class MovimientoController implements IMovimientoController {
 		return respuestaCrear;
 	}
 	@Override
-	public ResponseEntity<RespuestaType> actualizarMovimiento(@Valid MovimientosClienteType body) {
+	public ResponseEntity<RespuestaType> actualizarMovimiento(@Valid MovimientosType body) {
 		ResponseEntity<RespuestaType> respuestaActualizar;
 		try {	
 			LOG.info("INICIA PROCESO DE ACTUALIZAR MOVIMIENTO");
@@ -98,7 +101,7 @@ public class MovimientoController implements IMovimientoController {
 		ResponseEntity<?> respuesta;
 		LOG.info("INICIA CONSULTA MOVIMIENTOS DE UN RANGO DE FECHAS");
 		try {
-			List<MovimientosClienteType> movimientosCliente = mvtsSvc.consultarMovimientosPorFechas(fechaDesde, fechaHasta);
+			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorFechas(fechaDesde, fechaHasta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS DE UN RANGO DE FECHAS {}", e.getMessage());
@@ -115,7 +118,7 @@ public class MovimientoController implements IMovimientoController {
 		ResponseEntity<?> respuesta;
 		LOG.info("INICIA CONSULTA MOVIMIENTOS POR CLIENTE");
 		try {
-			List<MovimientosClienteType> movimientosCliente = mvtsSvc.consultarMovimientosPorCliente(numIdentificacion, fechaDesde, fechaHasta);
+			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorCliente(numIdentificacion, fechaDesde, fechaHasta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR CLIENTE {}", e.getMessage());
@@ -126,12 +129,32 @@ public class MovimientoController implements IMovimientoController {
 		LOG.info("FINALIZA MOVIMIENTOS POR CLIENTE");
 		return respuesta;
 	}
+	
+	
+	@Override
+	public ResponseEntity<?> consultarMovimientosPorCta(String numCuenta) {
+		ResponseEntity<?> respuesta;
+		LOG.info("INICIA CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA");
+		try {
+			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorCta(numCuenta);
+			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
+		} catch (Exception e) {
+			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}", e.getMessage());
+			return new ResponseEntity<>(
+					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		LOG.info("FINALIZA MOVIMIENTOS POR NUMERO DE CUENTA");
+		return respuesta;
+	}
+	
+	
 	@Override
 	public ResponseEntity<?> consultarMovimientosPorNumeroDeCta(String numCuenta, Date fechaDesde, Date fechaHasta) {
 		ResponseEntity<?> respuesta;
 		LOG.info("INICIA CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA");
 		try {
-			List<MovimientosClienteType> movimientosCliente = mvtsSvc.consultarMovimientosPorNumeroDeCta(numCuenta, fechaDesde, fechaHasta);
+			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorNumeroDeCta(numCuenta, fechaDesde, fechaHasta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}", e.getMessage());

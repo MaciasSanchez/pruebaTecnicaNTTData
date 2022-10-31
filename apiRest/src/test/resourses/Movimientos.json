@@ -1,18 +1,54 @@
 [
   {
+    "id": "361e02e1-24f0-4991-830b-adeaf3226ae5",
     "fecha": "2022-10-27T15:53:34.145Z",
-    "numeroDeCuenta": "585545",
+    "cliente": "Jose Lema",
+    "identificacionCliente": "098254785",
+    "numeroDeCuenta": "478758",
     "tipo": "AHORROS",
+    "saldoInicial": 2000.0,
     "estado": true,
     "tipoMovimiento": "RETIRO",
-    "movimiento": 575
+    "movimiento": 575,
+    "saldoDisponible": 1425.0
   },
   {
+    "id": "361e02e1-24f0-4991-830b-adeaf3226ae6",
     "fecha": "2022-10-27T15:53:34.145Z",
-    "numeroDeCuenta": "585545",
+    "cliente": "Marianela Montalvo",
+    "identificacionCliente": "097548965",
+    "numeroDeCuenta": "225487",
+    "tipo": "CORRIENTE",
+    "saldoInicial": 100.0,
+    "estado": true,
+    "tipoMovimiento": "DEPOSITO",
+    "movimiento": 600,
+    "saldoDisponible": 700.0
+  },
+  {
+    "id": "361e02e1-24f0-4991-830b-adeaf3226ae7",
+    "fecha": "2022-10-27T15:53:34.145Z",
+    "cliente": "Juan Osorio",
+    "identificacionCliente": "098874587",
+    "numeroDeCuenta": "495878",
     "tipo": "AHORROS",
+    "saldoInicial": 0.0,
+    "estado": true,
+    "tipoMovimiento": "DEPOSITO",
+    "movimiento": 150,
+    "saldoDisponible": 150.0
+  },
+  {
+    "id": "361e02e1-24f0-4991-830b-adeaf3226ae7",
+    "fecha": "2022-10-27T15:53:34.145Z",
+    "cliente": "Marianela Montalvo",
+    "identificacionCliente": "097548965",
+    "numeroDeCuenta": "496825",
+    "tipo": "AHORROS",
+    "saldoInicial": 540.0,
     "estado": true,
     "tipoMovimiento": "RETIRO",
-    "movimiento": 575
+    "movimiento": 540,
+    "saldoDisponible": 0.0
   }
 ]

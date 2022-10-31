@@ -5,6 +5,7 @@
     "edad": 30,
     "identificacion": "098254785",
     "direccion": "Otavalo sn y principal",
+    "clienteId": "cc181f01-002d-4ed5-b370-91feeb75c668",
     "telefono": "098254785",
     "contrasenia": "1234",
     "estado": true
@@ -15,8 +16,20 @@
     "edad": 30,
     "identificacion": "098874587",
     "direccion": "13 junio y Equinoccial",
+    "clienteId": "cc181f01-002d-4ed5-b370-91feeb75c658",
     "telefono": "098254785",
     "contrasenia": "12344",
+    "estado": true
+  },
+  {
+    "nombreCompleto": "Marianela Montalvo",
+    "genero": "FEMENINO",
+    "edad": 28,
+    "identificacion": "097548965",
+    "direccion": "Amazonas y  NNUU",
+    "clienteId": "cc181f01-002d-4ed5-b370-91feeb75c659",
+    "telefono": "097548965",
+    "contrasenia": "5678",
     "estado": true
   }
 ]

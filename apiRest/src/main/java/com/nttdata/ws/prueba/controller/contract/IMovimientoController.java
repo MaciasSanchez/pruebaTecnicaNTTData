@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.nttdata.ws.prueba.model.CrearMovimientoRequest;
 import com.nttdata.ws.prueba.model.EstadoCuentaDetalladoType;
 import com.nttdata.ws.prueba.model.EstadoCuentaType;
-import com.nttdata.ws.prueba.model.MovimientosClienteType;
 import com.nttdata.ws.prueba.model.MovimientosType;
 import com.nttdata.ws.prueba.model.RespuestaType;
 import com.nttdata.ws.prueba.model.TiposDeMovimiento;
@@ -51,7 +51,7 @@ public interface IMovimientoController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/movimientos", produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8", method = RequestMethod.POST)
 	ResponseEntity<?> crearMovimiento(
-			@Parameter(in = ParameterIn.DEFAULT, description = "Movimiento", required = true, schema = @Schema()) @Valid @RequestBody MovimientosType body);
+			@Parameter(in = ParameterIn.DEFAULT, description = "Movimiento", required = true, schema = @Schema()) @Valid @RequestBody CrearMovimientoRequest body);
 
 	/**
 	 * Operación PUT actualizarMovimiento
@@ -68,7 +68,7 @@ public interface IMovimientoController {
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/movimientos", produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8", method = RequestMethod.PUT)
 	ResponseEntity<?> actualizarMovimiento(
-			@Parameter(in = ParameterIn.DEFAULT, description = "Movimiento", required = true, schema = @Schema()) @Valid @RequestBody MovimientosClienteType body);
+			@Parameter(in = ParameterIn.DEFAULT, description = "Movimiento", required = true, schema = @Schema()) @Valid @RequestBody MovimientosType body);
 
 	/**
 	 * Operación DELETE eliminarMovimiento
@@ -90,6 +90,8 @@ public interface IMovimientoController {
 	/**
 	 * Operación GET consultarMovimientosPorCuentaTipoMovimiento
 	 * 
+	 * /movimientos/cuenta/tipo/{numeroCuenta}/{tipoMovimiento}
+	 * 
 	 * @param numeroCuenta
 	 * @param tipoMovimiento
 	 * @return
@@ -97,7 +99,7 @@ public interface IMovimientoController {
 	@Operation(summary = "Consultar los movimientos por un numero de cuenta y el tipo de movimiento", description = "Retorna el listado de movimientos según el número de cuenta y el tipo de movimiento ingresados", tags = {
 			"Movimientos" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosClienteType.class)))),
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
@@ -110,6 +112,8 @@ public interface IMovimientoController {
 	/**
 	 * Operación GET consultarMovimientosPorFechas
 	 * 
+	 * /movimientos/{fechaDesde}/{fechaHasta}
+	 * 
 	 * @param fechaDesde
 	 * @param fechaHasta
 	 * @return
@@ -117,7 +121,7 @@ public interface IMovimientoController {
 	@Operation(summary = "Consultar los movimientos por un rango de fechas", description = "Consultar los movimientos por un rango de fechas", tags = {
 			"Movimientos" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosClienteType.class)))),
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
@@ -128,8 +132,34 @@ public interface IMovimientoController {
 			@Parameter(in = ParameterIn.PATH, description = "Fecha final del rango de fechas ", required=true, schema=@Schema(), example = "2022-10-27")
 			@PathVariable(name = "fechaHasta", required = true) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaHasta);
 
+	
 	/**
 	 * Operación GET consultarMovimientosPorNumeroDeCta
+	 * 
+	 * /movimientos/cuenta/{numCuenta}/{fechaDesde}/{fechaHasta}
+	 * 
+	 * @param numCuenta
+	 * @param fechaDesde
+	 * @param fechaHasta
+	 * @return
+	 */
+	@Operation(summary = "Consultar los movimientos por num. de cuenta", description = "Consultar los movimientos por num de cuenta", tags = {
+			"Movimientos" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
+			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
+	@RequestMapping(value = "/movimientos/cuenta/{numCuenta}", produces = "application/json; charset=UTF-8", method = RequestMethod.GET)
+	ResponseEntity<?> consultarMovimientosPorCta(
+			@Parameter(in = ParameterIn.PATH, description = "Número de cuenta", required=true, schema=@Schema(), example = "")
+			@PathVariable(name = "numCuenta", required = true) String numCuenta);
+	
+	
+	/**
+	 * Operación GET consultarMovimientosPorNumeroDeCta
+	 * 
+	 * /movimientos/cuenta/{numCuenta}/{fechaDesde}/{fechaHasta}
 	 * 
 	 * @param numCuenta
 	 * @param fechaDesde
@@ -139,7 +169,7 @@ public interface IMovimientoController {
 	@Operation(summary = "Consultar los movimientos por num. de cuenta y un rango de fechas", description = "Consultar los movimientos por num de cuenta y un rango de fechas", tags = {
 			"Movimientos" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosClienteType.class)))),
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
@@ -155,6 +185,8 @@ public interface IMovimientoController {
 	/**
 	 * Operación GET consultarMovimientosPorCliente
 	 * 
+	 * /movimientos/cliente/{numIdentificacion}/{fechaDesde}/{fechaHasta}
+	 * 
 	 * @param numIdentificacion
 	 * @param fechaDesde
 	 * @param fechaHasta
@@ -163,7 +195,7 @@ public interface IMovimientoController {
 	@Operation(summary = "Consultar los movimientos por cliente y un rango de fechas", description = "Consultar los movimientos por usuario y un rango de fechas", tags = {
 			"Movimientos" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosClienteType.class)))),
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
@@ -180,6 +212,8 @@ public interface IMovimientoController {
 	
 	/**
 	 * Operación GET consultarEstadoCuenta
+	 * 
+	 * /movimientos/reportes/{identificacion}/{fechaDesde}/{fechaHasta}
 	 * 
 	 * @param numIdentificacion
 	 * @param fechaDesde

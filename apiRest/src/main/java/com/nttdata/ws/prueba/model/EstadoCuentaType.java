@@ -31,7 +31,7 @@ public class EstadoCuentaType {
 	private Date fechaInicioCorte;
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
 	private Date fechaFinCorte;
-	private List<MovimientosClienteType> detalleMovimientos;
+	private List<MovimientosType> detalleMovimientos;
 	private double montoTotalDepositos;
 	private double montoTotalRetiros;
 	private double saldoDisponibleCorte;

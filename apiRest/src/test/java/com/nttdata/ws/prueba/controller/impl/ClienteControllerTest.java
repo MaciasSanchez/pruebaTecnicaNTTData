@@ -29,6 +29,7 @@ import com.nttdata.ws.prueba.repository.contract.IClienteRepository;
 import com.nttdata.ws.prueba.repository.model.Cliente;
 import com.nttdata.ws.prueba.utils.ClienteConvert;
 
+
 /**
  * @author Angelica
  *
@@ -74,8 +75,6 @@ class ClienteControllerTest {
 
 	@Test
 	void testCrearCliente() throws JsonProcessingException, Exception {
-		clienteRepo.deleteAll();
-
 		ClienteType dto = objectMapper.readValue(requestClienteInput, new TypeReference<List<ClienteType>>() {
 		}).get(0);
 		this.mockMvc
@@ -94,8 +93,10 @@ class ClienteControllerTest {
 	 */
 	@Test
 	void testActualizarCliente() throws JsonProcessingException, Exception {
-		testCrearCliente();
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);
 		Cliente cliente = clienteRepo.consultarClientePorIdentificacion("098254785");
+		cliente.setDireccion("");
 		
 		this.mockMvc
 				.perform(MockMvcRequestBuilders.put("/clientes").content(objectMapper.writeValueAsString(ClienteConvert.modelToType(cliente)))
@@ -112,7 +113,8 @@ class ClienteControllerTest {
 
 	 @Test 
 	 void testEliminarCliente() throws JsonProcessingException, Exception { 
-		 testCrearCliente();
+		 List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+			clienteRepo.saveAll(clientes);
 		 ClienteType cliente = ClienteConvert.modelToType(clienteRepo.consultarClientePorIdentificacion("098254785"));
 		 UUID id =  cliente.getId();
 		 this.mockMvc
@@ -131,11 +133,33 @@ class ClienteControllerTest {
 	 */
 	@Test
 	void testConsultarClientePorIdentificacion() throws Exception, Throwable {
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);
+		
 		String numIdentificacion = "098254785";
 		this.mockMvc
 				.perform(MockMvcRequestBuilders.get("/clientes/{numIdentificacion}", numIdentificacion)
 						.accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+	
+	
+	/**
+	 * Test method for
+	 * {@link com.nttdata.ws.prueba.controller.impl.ClienteController#consultarClientePorIdentificacion(java.lang.String)}.
+	 * @throws Exception
+	 * @throws Throwable
+	 */
+	@Test
+	void testConsultarClientePorIdentificacionNotFound() throws Exception, Throwable {
+
+		String numIdentificacion = "098254785";
+		this.mockMvc
+				.perform(MockMvcRequestBuilders.get("/clientes/{numIdentificacion}", numIdentificacion)
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNotFound());
 
 	}
 
@@ -147,8 +171,22 @@ class ClienteControllerTest {
 	 */
 	@Test
 	void testConsultarClientes() throws Exception, Throwable {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/clientes").accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	/**
+	 * Test method for
+	 * {@link com.nttdata.ws.prueba.controller.impl.ClienteController#consultarClientes()}.
+	 * 
+	 * @throws Throwable
+	 */
+	@Test
+	void testConsultarClientesNoContent() throws Exception, Throwable {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/clientes").accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
 }

@@ -8,17 +8,17 @@
             "id": "361e02e1-24f0-4991-830b-adeaf3226ae6",
             "fecha": "2022-10-27T15:53:34.145+00:00",
             "cliente": "Jose Lema",
-            "identificacionCliente": null,
-            "numeroDeCuenta": null,
+            "identificacionCliente": "098254785",
+            "numeroDeCuenta": "496825",
             "tipo": "AHORROS",
-            "saldoInicial": 1000.0,
+            "saldoInicial": 2000.0,
             "estado": true,
             "tipoMovimiento": "RETIRO",
             "movimiento": -575.0,
-            "saldoDisponible": 425.0
+            "saldoDisponible": 1425.0
         }
     ],
     "montoTotalDepositos": 0.0,
     "montoTotalRetiros": -575.0,
-    "saldoDisponibleCorte": 425.0
+    "saldoDisponibleCorte": 1425.0
 }

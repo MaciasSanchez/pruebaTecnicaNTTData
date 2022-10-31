@@ -3,8 +3,6 @@
  */
 package com.nttdata.ws.prueba.controller.impl;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -27,14 +25,11 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nttdata.ws.prueba.model.ClienteType;
 import com.nttdata.ws.prueba.model.CuentaType;
 import com.nttdata.ws.prueba.repository.contract.IClienteRepository;
 import com.nttdata.ws.prueba.repository.contract.ICuentaRepository;
 import com.nttdata.ws.prueba.repository.model.Cliente;
 import com.nttdata.ws.prueba.repository.model.Cuenta;
-import com.nttdata.ws.prueba.utils.ClienteConvert;
-import com.nttdata.ws.prueba.utils.CuentaConvert;
 
 /**
  * @author Angelica
@@ -83,16 +78,9 @@ class CuentaControllerTest {
 	 */
 	@Test
 	void testCrearCuenta() throws Exception {
-		cuentaRepo.deleteAll();
-		clienteRepo.deleteAll();
 		
-		ClienteType cliente = objectMapper.readValue(requestClienteInput, new TypeReference<List<ClienteType>>() {
-		}).get(0);
-		this.mockMvc
-				.perform(MockMvcRequestBuilders.post("/clientes").content(objectMapper.writeValueAsString(cliente))
-						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isCreated());
-		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);		
 
 		CuentaType dto = objectMapper.readValue(requestCuentaInput, new TypeReference<List<CuentaType>>() {}).get(0);
 		this.mockMvc
@@ -106,49 +94,135 @@ class CuentaControllerTest {
 	 */
 	@Test
 	void testActualizarCuenta() throws Exception {
-		cuentaRepo.deleteAll();
-		clienteRepo.deleteAll();
 		
-		testCrearCuenta();		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
 		
-		List<Cuenta> cuentas = cuentaRepo.consultarCuentaPorNumeroIdentificacion("098254785");
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);
+		
+		List<Cuenta> cuentasCliente = cuentaRepo.consultarCuentaPorNumeroIdentificacion("098254785");
+		Cuenta detalleCuenta = cuentasCliente.get(0);
+		detalleCuenta.setEstado(false);
 		
 		this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(CuentaConvert.modelToType(cuentas.get(0))))
+				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(detalleCuenta))
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.CuentaController#eliminarCuenta(java.lang.String)}.
+	 * @throws IOException 
+	 * @throws DatabindException 
+	 * @throws StreamReadException 
 	 */
 	@Test
-	void testEliminarCuenta() {
-		fail("Not yet implemented");
+	void testEliminarCuenta() throws StreamReadException, DatabindException, IOException {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.CuentaController#consultarCuentaPorNumero(java.lang.String)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarCuentaPorNumero() {
-		fail("Not yet implemented");
+	void testConsultarCuentaPorNumero() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);
+		
+		String numCuenta = "496825";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/cuentas/numero/{numCuenta}", numCuenta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+		
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	@Test
+	void testConsultarCuentaPorNumeroNotFound() throws Exception {
+		
+		String numCuenta = "496825";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/cuentas/numero/{numCuenta}", numCuenta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNotFound());
+		
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.CuentaController#consultarCuentaPorNumeroIdentificacion(java.lang.String)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarCuentaPorNumeroIdentificacion() {
-		fail("Not yet implemented");
+	void testConsultarCuentaPorNumeroIdentificacion() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);
+		String numCuenta = "097548965";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/cuentas/cliente/{numIdentificacion}", numCuenta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+		
+		
+	}
+	
+	
+	/**
+	 * @throws Exception
+	 */
+	@Test
+	void testConsultarCuentaPorNumeroIdentificacionNoContent() throws Exception {
+		
+		String numIdentificacion = "097548965";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/cuentas/cliente/{numIdentificacion}", numIdentificacion)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNoContent());
+		
+		
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.CuentaController#consultarCuentas()}.
+	 * @throws Exception 
+	 * @throws DatabindException 
+	 * @throws StreamReadException 
 	 */
 	@Test
-	void testConsultarCuentas() {
-		fail("Not yet implemented");
+	void testConsultarCuentas() throws StreamReadException, DatabindException, Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/cuentas").accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	void testConsultarCuentasNoContent() throws StreamReadException, DatabindException, Exception {
+		
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/cuentas").accept(MediaType.APPLICATION_JSON))
+				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
 }

@@ -31,7 +31,6 @@ public class MensajesDelServicio {
 	public static final String NOMBRE_REPORTE = "ESTADO DE CUENTA";
 	// MENSAJES DE RESPUESTA
 	public static final String MENSAJE_SALDO_CERO = "Saldo no disponible";
-	public static final String MENSAJE_CUPO_MAXIMO = "Cupo diario Excedido";
 	
 	
 	public static final String CREACION_COMPLETADA = "Se ha creado el recurso con el ID %s";
@@ -40,7 +39,5 @@ public class MensajesDelServicio {
 	public static final String ACTUALIZACION_CORRECTA = "Información actualizada correctamente";
 	public static final String CEDULA_EXISTENTE = "Estimado cliente, el número de identificación %s ya se encuentra registrado.";
 	public static final String CUENTA_EXISTENTE = "Estimado cliente, el número de cuenta %s ya se encuentra registrado.";	
-	public static final Double VALOR_TOPE = 1000.00;
-	public static final String SALDO_CERO = "Saldo no disponible";
-	public static final String CUPO_MAXIMO = "Cupo diario Excedido";
+	
 }
