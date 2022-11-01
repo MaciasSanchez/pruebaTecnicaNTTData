@@ -4,9 +4,6 @@
 package com.nttdata.ws.prueba.controller.impl;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -271,7 +268,6 @@ class MovimientoControllerTest {
 	 */
 	@Test
 	void testConsultarMovimientosPorNumeroDeCta() throws Exception {
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
 		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
 		clienteRepo.saveAll(clientes);	

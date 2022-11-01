@@ -119,20 +119,20 @@ public class MovimientosSvc implements IMovimientosSvc {
 		// valida el id del movimiento
 		if (!mvtsRepository.existsById(movimientosType.getId())) {
 			throw new BusinessException(
-					String.format("El movimiento: [%s] no se encuentra registrado", movimientosType.getId().toString()),
+					String.format(MensajesDelServicio.MOVIMIENTO_NO_REGISTRADO, movimientosType.getId().toString()),
 					TipoError.SOLICITUD_INVALIDA);
 		} else {
 			// valida si la cuenta existe
 			if (datosCta.equals(null)) {
 				throw new BusinessException(
-						String.format("El num. de cuenta: [%s] no se encuentra registrado", numCuenta),
+						String.format(MensajesDelServicio.NRO_CUENTA_NO_REGISTRADA, numCuenta),
 						TipoError.SOLICITUD_INVALIDA);
 
 			} else {
 				// valida que el numero de identificacion este registrado anteriormente
 				if (datosClte == null) {
 					throw new BusinessException(
-							String.format("El cliente con número de identificación: [%s] no se encuentra registrado",
+							String.format(MensajesDelServicio.IDENTIFICACION_NO_REGISTRADA,
 									identificacion),
 							TipoError.SOLICITUD_INVALIDA);
 
@@ -140,7 +140,7 @@ public class MovimientosSvc implements IMovimientosSvc {
 					// valida que el numero de identificacion
 					if (!identificacion.equals(datosCta.getIdentificacion())) {
 						throw new BusinessException(String.format(
-								"El cliente con número de identificación: [%s] no esta asociado a nro. de cuenta [%s]",
+								MensajesDelServicio.NRO_CUENTA_CTE_NO_REGISTRADO,
 								identificacion, numCuenta), TipoError.SOLICITUD_INVALIDA);
 					}
 				}

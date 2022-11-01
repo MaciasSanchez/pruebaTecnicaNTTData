@@ -35,7 +35,7 @@ public class CuentasSvc implements ICuentasSvc {
 		String nombreCliente = cuentaRepository.consultaIdentificacion(identificacion);
 		if (!(identificacion.equals(cuentaRepository.consultaIdentificacionCliente(identificacion)))) {
 			throw new BusinessException(
-					String.format("El cliente con número de identificación: [%s] no se encuentra registrado",
+					String.format(MensajesDelServicio.IDENTIFICACION_NO_REGISTRADA,
 							cuentaType.getNumeroDeCuenta()),
 					TipoError.SOLICITUD_INVALIDA);
 		} else {
@@ -43,7 +43,7 @@ public class CuentasSvc implements ICuentasSvc {
 			List<Cuenta> cuentas = (List<Cuenta>) cuentaRepository.consultarCuentas();
 			for (Cuenta cta : cuentas) {
 				if (numCuenta.equals(cta.getNumeroDeCuenta())) {
-					throw new BusinessException(String.format("El número de cuenta: [%s] ya se encuentra registrado",
+					throw new BusinessException(String.format(MensajesDelServicio.NRO_CUENTA_REGISTRADA,
 							cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 				}
 			}
@@ -66,13 +66,13 @@ public class CuentasSvc implements ICuentasSvc {
 			//valida que no se actualice o se ingrese un numero de cuenta ya registrado anteriormente
 			if (!(numeroDeCuenta.equals(numCuenta))
 					&& cuentaRepository.existsAccountNumber(numCuenta)) {
-				throw new BusinessException(String.format("El num. de cuenta: [%s] ya se encuentra registrado",
+				throw new BusinessException(String.format(MensajesDelServicio.NRO_CUENTA_REGISTRADA,
 						cuentaType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 			}
 			// valida que si el numero de identificación ingresado este registrado en la tabla de clientes
 			if (!(identificacion.equals(cuentaRepository.consultaIdentificacionCliente(identificacion)))) {
 				throw new BusinessException(
-						String.format("El cliente con número de identificación: [%s] no se encuentra registrado",
+						String.format(MensajesDelServicio.IDENTIFICACION_NO_REGISTRADA,
 								cuentaType.getNumeroDeCuenta()),
 						TipoError.SOLICITUD_INVALIDA);
 			}

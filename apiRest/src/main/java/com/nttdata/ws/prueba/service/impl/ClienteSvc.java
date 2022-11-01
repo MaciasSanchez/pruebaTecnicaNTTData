@@ -44,7 +44,7 @@ public class ClienteSvc implements IClienteSvc {
 			String numIdentificacion = clienteRepository.findByIdentificacion(id);
 			if (!(numIdentificacion.equals(clienteType.getIdentificacion().toUpperCase()))
 					&& clienteRepository.existsIdentificacion(clienteType.getIdentificacion().toUpperCase())) {
-				throw new BusinessException(String.format("El num. identificación: [%s] ya se encuentra registrado",
+				throw new BusinessException(String.format(MensajesDelServicio.IDENTIFICACION_REGISTRADA,
 						clienteType.getIdentificacion()), TipoError.SOLICITUD_INVALIDA);
 			}
 			cliente = clienteRepository.save(ClienteConvert.typeToModel(clienteType));
