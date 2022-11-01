@@ -24,7 +24,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombreCompleto\": \"Jose Lema\",\n    \"genero\": \"MASCULINO\",\n    \"edad\": 30,\n    \"identificacion\": \"098254785\",\n    \"direccion\": \"Otavalo sn y principal\",\n    \"telefono\": \"098254785\",\n    \"contrasenia\": \"1234\",\n    \"estado\": true\n  }"
+							"raw": "{\n    \"nombreCompleto\": \"Jose Lema\",\n    \"genero\": \"MASCULINO\",\n    \"edad\": 30,\n    \"identificacion\": \"098254785\",\n    \"direccion\": \"Otavalo sn y principal\",\n    \"telefono\": \"098254785\",\n    \"contrasenia\": \"1234\",\n    \"estado\": true\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8003/clientes",
@@ -179,7 +179,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"numeroDeCuenta\": \"585545\",\n  \"identificacion\": \"098254785\",\n  \"tipoCuenta\": \"CORRIENTE\",\n  \"saldoInicial\": 1000,\n  \"estado\": true\n}"
+							"raw": "{\n    \"numeroDeCuenta\": \"585545\",\n    \"identificacion\": \"098254785\",\n    \"tipoCuenta\": \"CORRIENTE\",\n    \"saldoInicial\": 1000,\n    \"estado\": true\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8003/cuentas",
@@ -220,7 +220,7 @@
 							"variable": [
 								{
 									"key": "numCuenta",
-									"value": "585545"
+									"value": "495878"
 								}
 							]
 						}
@@ -352,6 +352,38 @@
 			"name": "Movimientos",
 			"item": [
 				{
+					"name": "actualizarMovimiento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n        \"id\": \"37046bd9-da01-42f2-b2a6-54a1362d2316\",\n        \"fecha\": \"2022-10-31T18:55:34.145+00:00\",\n        \"cliente\": \"Jose Lema\",\n        \"identificacionCliente\": \"098254785\",\n        \"numeroDeCuenta\": \"478758\",\n        \"tipo\": \"AHORROS\",\n        \"saldoInicial\": 2000.0,\n        \"estado\": true,\n        \"tipoMovimiento\": \"RETIRO\",\n        \"movimiento\": -575.0,\n        \"saldoDisponible\": 850.0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8003/movimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "crearMovimiento",
 					"request": {
 						"method": "POST",
@@ -367,7 +399,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fecha\": \"2022-10-27T15:53:34.145Z\",\n  \"numeroDeCuenta\": \"478758\",\n  \"tipo\": \"AHORROS\",\n  \"estado\": true,\n  \"tipoMovimiento\": \"RETIRO\",\n  \"movimiento\": 575\n}"
+							"raw": "{\n  \"fecha\": \"2022-10-31T17:59:34.145Z\",\n  \"numeroDeCuenta\": \"585545\",\n  \"tipo\": \"AHORROS\",\n  \"estado\": true,\n  \"tipoMovimiento\": \"RETIRO\",\n  \"movimiento\": 75.00\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8003/movimientos",
@@ -412,7 +444,7 @@
 								},
 								{
 									"key": "fechaHasta",
-									"value": "2022-10-27"
+									"value": "2022-10-31"
 								}
 							]
 						}
@@ -462,6 +494,162 @@
 					"response": []
 				},
 				{
+					"name": "consultaEstadoCuentaDetallado",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/reportes/cliente/:identificacion/:fechaDesde/:fechaHasta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"reportes",
+								"cliente",
+								":identificacion",
+								":fechaDesde",
+								":fechaHasta"
+							],
+							"variable": [
+								{
+									"key": "identificacion",
+									"value": "098254785"
+								},
+								{
+									"key": "fechaDesde",
+									"value": "2022-10-27"
+								},
+								{
+									"key": "fechaHasta",
+									"value": "2022-10-27"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaMovimientosPorCuenta",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/cuenta/:numCuenta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"cuenta",
+								":numCuenta"
+							],
+							"variable": [
+								{
+									"key": "numCuenta",
+									"value": "478758"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaMovimientosPorCtaTipoMovimiento",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/cuenta/tipo/:numCuenta/:tipoMovimiento",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"cuenta",
+								"tipo",
+								":numCuenta",
+								":tipoMovimiento"
+							],
+							"variable": [
+								{
+									"key": "numCuenta",
+									"value": "495878"
+								},
+								{
+									"key": "tipoMovimiento",
+									"value": "RETIRO",
+									"description": "TIPO DE MOVIMIENTO: RETIRO , DEPOSITO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultaMovimientosPorCuentaFechas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json; charset=UTF-8"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8003/movimientos/cuenta/:numCuenta/:fechaDesde/:fechaHasta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8003",
+							"path": [
+								"movimientos",
+								"cuenta",
+								":numCuenta",
+								":fechaDesde",
+								":fechaHasta"
+							],
+							"variable": [
+								{
+									"key": "numCuenta",
+									"value": "495878"
+								},
+								{
+									"key": "fechaDesde",
+									"value": "2022-10-27"
+								},
+								{
+									"key": "fechaHasta",
+									"value": "2022-10-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "consultaMovimientosPorIdentificacionFechas",
 					"request": {
 						"method": "GET",
@@ -496,40 +684,8 @@
 								},
 								{
 									"key": "fechaHasta",
-									"value": "2022-10-27"
+									"value": "2022-10-31"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "actualizarMovimiento",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "accept",
-								"value": "application/json; charset=UTF-8"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json; charset=UTF-8"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id\": \"f164ee2b-995f-468e-83fd-163192c7395d\",\n  \"fecha\": \"2022-10-27T15:53:34.145Z\",\n  \"cliente\": \"Jose Lema\",\n    \"identificacionCliente\": null,\n    \"numeroDeCuenta\": null,\n    \"tipo\": \"AHORROS\",\n    \"saldoInicial\": 2000,\n    \"estado\": true,\n    \"tipoMovimiento\": \"RETIRO\",\n    \"movimiento\": -575,\n    \"saldoDisponible\": 1425\n}"
-						},
-						"url": {
-							"raw": "http://localhost:8003/movimientos",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8003",
-							"path": [
-								"movimientos"
 							]
 						}
 					},
@@ -559,7 +715,7 @@
 							"variable": [
 								{
 									"key": "movimientoId",
-									"value": "f164ee2b-995f-468e-83fd-163192c7395d"
+									"value": "9c816837-02af-4d24-a871-c30d2c1a3f31"
 								}
 							]
 						}

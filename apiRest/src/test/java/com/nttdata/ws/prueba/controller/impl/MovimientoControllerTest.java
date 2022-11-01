@@ -356,6 +356,31 @@ class MovimientoControllerTest {
 				.accept(MediaType.APPLICATION_JSON))
 		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
 	}
+	
+	
+	/**
+	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarEstadoCuenta(java.lang.String, java.util.Date, java.util.Date)}.
+	 * @throws Exception 
+	 */
+	@Test
+	void testConsultarEstadoCuentaDetallado() throws Exception {
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numIdentificacion = "098254785";
+		String fechaDesde = "2022-10-27";
+		String fechaHasta = "2022-10-31";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/reportes/cliente/{identificacion}/{fechaDesde}/{fechaHasta}", numIdentificacion, fechaDesde,fechaHasta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
+	}
+	
+	
 
 
 

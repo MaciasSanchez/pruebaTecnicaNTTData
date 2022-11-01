@@ -90,7 +90,10 @@ public class CuentasSvc implements ICuentasSvc {
 			cuentaRepository.deleteById(cuentaId);
 			recursoBorrado = true;
 		} else {
-			throw new BusinessException(MensajesDelServicio.RECURSO_NO_ENCONTRADO, TipoError.NO_ENCONTRADO);
+			throw new BusinessException(
+					String.format(MensajesDelServicio.RECURSO_NO_ENCONTRADO,
+							cuentaId),
+					TipoError.NO_ENCONTRADO);
 		}
 
 		return recursoBorrado;
@@ -105,7 +108,10 @@ public class CuentasSvc implements ICuentasSvc {
 	public Cuenta consultarCuentaPorNumero(String numeroDeCuenta) throws BusinessException {
 		Cuenta cuenta = cuentaRepository.consultarCuentaPorNumero(numeroDeCuenta.trim().toUpperCase());
 		if (cuenta == null) {
-			throw new BusinessException(MensajesDelServicio.RECURSO_NO_ENCONTRADO, TipoError.NO_ENCONTRADO);
+			throw new BusinessException(
+					String.format(MensajesDelServicio.NRO_CUENTA_NO_REGISTRADA,
+							numeroDeCuenta.trim()),
+					TipoError.NO_ENCONTRADO);
 		}
 		return cuenta;
 	}

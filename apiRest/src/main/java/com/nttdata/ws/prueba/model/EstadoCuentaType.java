@@ -8,7 +8,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.nttdata.ws.prueba.constants.MensajesDelServicio;
+import com.nttdata.ws.prueba.utils.DecimalJsonSerializer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,8 +34,11 @@ public class EstadoCuentaType {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
 	private Date fechaFinCorte;
 	private List<MovimientosType> detalleMovimientos;
+	@JsonSerialize(using = DecimalJsonSerializer.class)
 	private double montoTotalDepositos;
+	@JsonSerialize(using = DecimalJsonSerializer.class)
 	private double montoTotalRetiros;
+	@JsonSerialize(using = DecimalJsonSerializer.class)
 	private double saldoDisponibleCorte;
 	
 }

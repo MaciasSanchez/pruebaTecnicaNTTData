@@ -60,7 +60,10 @@ public class ClienteSvc implements IClienteSvc {
 			clienteRepository.deleteById(clienteId);
 			recursoBorrado = true;
 		} else {
-			throw new BusinessException(MensajesDelServicio.RECURSO_NO_ENCONTRADO, TipoError.NO_ENCONTRADO);
+			throw new BusinessException(
+					String.format(MensajesDelServicio.RECURSO_NO_ENCONTRADO,
+							clientId.trim()),
+					TipoError.NO_ENCONTRADO);
 		}
 
 		return recursoBorrado;
@@ -68,9 +71,12 @@ public class ClienteSvc implements IClienteSvc {
 
 	@Override
 	public Cliente consultarClientePorIdentificacion(String numIdentificacion) throws BusinessException {
-		Cliente cliente = clienteRepository.consultarClientePorIdentificacion(numIdentificacion);
+		Cliente cliente = clienteRepository.consultarClientePorIdentificacion(numIdentificacion.trim());
 		if (cliente == null) {
-			throw new BusinessException(MensajesDelServicio.RECURSO_NO_ENCONTRADO, TipoError.NO_ENCONTRADO);
+			throw new BusinessException(
+					String.format(MensajesDelServicio.IDENTIFICACION_NO_REGISTRADA,
+							numIdentificacion.trim()),
+					TipoError.NO_ENCONTRADO);
 		}
 		return cliente;
 	}
