@@ -4,8 +4,8 @@
 package com.nttdata.ws.prueba.controller.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +30,7 @@ import com.nttdata.ws.prueba.repository.contract.IClienteRepository;
 import com.nttdata.ws.prueba.repository.contract.ICuentaRepository;
 import com.nttdata.ws.prueba.repository.model.Cliente;
 import com.nttdata.ws.prueba.repository.model.Cuenta;
+import com.nttdata.ws.prueba.utils.CuentaConvert;
 
 /**
  * @author Angelica
@@ -113,17 +114,24 @@ class CuentaControllerTest {
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.CuentaController#eliminarCuenta(java.lang.String)}.
-	 * @throws IOException 
-	 * @throws DatabindException 
-	 * @throws StreamReadException 
+	 * @throws Exception 
 	 */
 	@Test
-	void testEliminarCuenta() throws StreamReadException, DatabindException, IOException {
+	void testEliminarCuenta() throws Exception {
 		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
 		clienteRepo.saveAll(clientes);	
 		
 		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
 		cuentaRepo.saveAll(cuentas);
+		
+		String numCta = "478758";
+		
+		CuentaType cuenta = CuentaConvert.modelToType(cuentaRepo.consultarCuentaPorNumero(numCta));
+		 UUID id =  cuenta.getId();
+		 this.mockMvc
+			.perform(MockMvcRequestBuilders.delete("/cuentas/{id}", id.toString())
+					.accept(MediaType.APPLICATION_JSON))
+			.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**

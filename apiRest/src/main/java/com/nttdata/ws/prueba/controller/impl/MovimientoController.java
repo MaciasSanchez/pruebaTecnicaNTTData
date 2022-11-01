@@ -56,7 +56,6 @@ public class MovimientoController implements IMovimientoController {
 					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
 		LOG.info("FINALIZA PROCESO DE CREAR MOVIMIENTO");
 		return respuestaCrear;
 	}
@@ -120,6 +119,9 @@ public class MovimientoController implements IMovimientoController {
 		try {
 			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorCliente(numIdentificacion, fechaDesde, fechaHasta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
+		}catch (BusinessException e) {
+			LOG.error("ERROR DE NEGOCIO CONSULTA MOVIMIENTOS POR CLIENTE ->{}", e.getMessage());
+			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR CLIENTE {}", e.getMessage());
 			return new ResponseEntity<>(
@@ -138,6 +140,9 @@ public class MovimientoController implements IMovimientoController {
 		try {
 			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorCta(numCuenta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
+		} catch (BusinessException e) {
+			LOG.error("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}",e.getMessage());;
+			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}", e.getMessage());
 			return new ResponseEntity<>(
@@ -156,6 +161,9 @@ public class MovimientoController implements IMovimientoController {
 		try {
 			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorNumeroDeCta(numCuenta, fechaDesde, fechaHasta);
 			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
+		} catch (BusinessException e) {
+			LOG.error("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}",e.getMessage());;
+			return DataValidator.validarResultado(e);
 		} catch (Exception e) {
 			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA {}", e.getMessage());
 			return new ResponseEntity<>(
@@ -168,8 +176,22 @@ public class MovimientoController implements IMovimientoController {
 	@Override
 	public ResponseEntity<?> consultarMovimientosPorCuentaTipoMovimiento(String numeroCuenta,
 			TiposDeMovimiento tipoMovimiento) {
-		// TODO Auto-generated method stub
-		return null;
+		ResponseEntity<?> respuesta;
+		LOG.info("INICIA CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA  Y TIPO DE MOVIMIENTO");
+		try {
+			List<MovimientosType> movimientosCliente = mvtsSvc.consultarMovimientosPorCuentaTipoMovimiento(numeroCuenta, tipoMovimiento);
+			respuesta = MovimientosValidator.validarResultado(movimientosCliente);
+		} catch (BusinessException e) {
+			LOG.error("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA  Y TIPO DE MOVIMIENTO {}",e.getMessage());;
+			return DataValidator.validarResultado(e);
+		} catch (Exception e) {
+			LOG.info("ERROR EN CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA  Y TIPO DE MOVIMIENTO {}", e.getMessage());
+			return new ResponseEntity<>(
+					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		LOG.info("INICIA CONSULTA MOVIMIENTOS POR NUMERO DE CUENTA  Y TIPO DE MOVIMIENTO");
+		return respuesta;
 	}
 	@Override
 	public ResponseEntity<?> consultarEstadoCuenta(String identificacion, Date fechaDesde, Date fechaHasta) {

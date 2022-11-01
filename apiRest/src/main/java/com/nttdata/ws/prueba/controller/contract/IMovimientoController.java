@@ -149,6 +149,7 @@ public interface IMovimientoController {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/movimientos/cuenta/{numCuenta}", produces = "application/json; charset=UTF-8", method = RequestMethod.GET)
 	ResponseEntity<?> consultarMovimientosPorCta(
@@ -172,6 +173,7 @@ public interface IMovimientoController {
 			@ApiResponse(responseCode = "200", description = "OK", content = @Content(array = @ArraySchema(schema = @Schema(implementation = MovimientosType.class)))),
 			@ApiResponse(responseCode = "204", description = "No Content", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/movimientos/cuenta/{numCuenta}/{fechaDesde}/{fechaHasta}", produces = "application/json; charset=UTF-8", method = RequestMethod.GET)
 	ResponseEntity<?> consultarMovimientosPorNumeroDeCta(

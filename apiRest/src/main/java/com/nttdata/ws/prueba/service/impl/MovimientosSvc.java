@@ -54,7 +54,7 @@ public class MovimientosSvc implements IMovimientosSvc {
 		Double saldoDisponible = mvtsRepository.consultaSaldoUltimaMovimiento(numeroDeCuenta);
 		if (!(numeroDeCuenta.equals(datosCuenta.getNumeroDeCuenta()))) {
 			throw new BusinessException(String.format(
-					"El número de cuenta: [%s] no se encuentra registrado, por favor verifique el numero.",
+					MensajesDelServicio.NRO_CUENTA_NO_REGISTRADA,
 					movimientosType.getNumeroDeCuenta()), TipoError.SOLICITUD_INVALIDA);
 		}
 		Cliente datosCliente = clienteRepository.consultarClientePorIdentificacion(datosCuenta.getIdentificacion());
@@ -67,7 +67,7 @@ public class MovimientosSvc implements IMovimientosSvc {
 		mov.setTipo(movimientosType.getTipo());
 		mov.setTipoMovimiento(movimientosType.getTipoMovimiento());
 		mov.setSaldoInicial(datosCuenta.getSaldoInicial());
-
+		
 		// si el tipo de movimiento es DEBITO - RETIRO
 		if (TiposDeMovimiento.RETIRO.equals(movimientosType.getTipoMovimiento())) {
 
@@ -93,10 +93,6 @@ public class MovimientosSvc implements IMovimientosSvc {
 				}
 				mov.setSaldoDisponible(saldoDisponible + mov.getMovimiento());
 			}
-			//mov.setSaldoDisponible(datosCuenta.getSaldoInicial() + mov.getMovimiento());
-
-			// movimientosType.setSaldoDisponible((datosCuenta.getSaldoInicial() -
-			// Math.abs(movimientosType.getMovimiento()) ));
 
 		} else {
 			mov.setMovimiento(movimientosType.getMovimiento());
@@ -204,7 +200,7 @@ public class MovimientosSvc implements IMovimientosSvc {
 		// si no esta registrada lanza la excepción de logica de negocio
 		if (datosCliente == null) {
 			throw new BusinessException(String.format(
-					"El número de identificación: [%s] no se encuentra registrado, por favor verifique el numero.",
+					MensajesDelServicio.IDENTIFICACION_NO_REGISTRADA,
 					numIdentificacion.trim()), TipoError.SOLICITUD_INVALIDA);
 
 		}
@@ -274,9 +270,28 @@ public class MovimientosSvc implements IMovimientosSvc {
 	}
 
 	@Override
-	public List<MovimientosType> consultarMovimientosPorCta(String numCuenta) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MovimientosType> consultarMovimientosPorCta(String numCuenta) throws BusinessException {
+		String numeroCta = numCuenta.trim();
+		Cuenta datosCuenta = cuentaRepository.verificaNumeroCuenta(numeroCta);
+		if (datosCuenta == null) {
+			throw new BusinessException(String.format(
+					MensajesDelServicio.NRO_CUENTA_NO_REGISTRADA,
+					numCuenta), TipoError.NO_ENCONTRADO);
+		}
+		return MovimientosConvert.listModelToType(mvtsRepository.consultarMovimientosPorCta(numeroCta));
+	}
+
+	@Override
+	public List<MovimientosType> consultarMovimientosPorCuentaTipoMovimiento(String numeroCuenta,
+			TiposDeMovimiento tipoMovimiento) throws BusinessException {
+		String numeroCta = numeroCuenta.trim();
+		Cuenta datosCuenta = cuentaRepository.verificaNumeroCuenta(numeroCta);
+		if (!(numeroCta.equals(datosCuenta.getNumeroDeCuenta()))) {
+			throw new BusinessException(String.format(
+					MensajesDelServicio.NRO_CUENTA_NO_REGISTRADA,
+					numeroCta), TipoError.SOLICITUD_INVALIDA);
+		}
+		return MovimientosConvert.listModelToType(mvtsRepository.consultaTipoMovimientosCta(numeroCta, tipoMovimiento));
 	}
 
 }

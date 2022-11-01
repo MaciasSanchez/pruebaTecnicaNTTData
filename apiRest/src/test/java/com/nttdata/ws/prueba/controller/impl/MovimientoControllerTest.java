@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +26,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.ws.prueba.model.MovimientosType;
+import com.nttdata.ws.prueba.model.TiposDeMovimiento;
 import com.nttdata.ws.prueba.repository.contract.IClienteRepository;
 import com.nttdata.ws.prueba.repository.contract.ICuentaRepository;
 import com.nttdata.ws.prueba.repository.contract.IMovimientosRepository;
@@ -59,13 +62,13 @@ class MovimientoControllerTest {
 	private ICuentaRepository cuentaRepo;
 	
 	@Autowired
-	private IMovimientosRepository movtsRepo;
+	private IMovimientosRepository mvtsRepo;
 
 	private File requestCuentaInput;
 	
 	private File requestClienteInput;
 	
-	private File requestMovimientosInput;
+	private File requestMovimientoInput;
 	
 	
 	@BeforeEach
@@ -73,20 +76,19 @@ class MovimientoControllerTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		this.requestClienteInput = new File("src/test/resourses/Cliente.json");
 		this.requestCuentaInput = new File("src/test/resourses/Cuentas.json");
-		this.requestMovimientosInput = new File("src/test/resourses/Movimientos.json");
+		this.requestMovimientoInput = new File("src/test/resourses/Movimientos.json");
 	}
-	
 
 	@AfterEach
 	void tearDown() throws Exception {
 		this.mockMvc = null;
-		clienteRepo.deleteAll();
 		cuentaRepo.deleteAll();
-		movtsRepo.deleteAll();
+		clienteRepo.deleteAll();
+		mvtsRepo.deleteAll();
 	}
 
 	/**
-	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#crearMovimiento(com.nttdata.ws.prueba.model.MovimientosType)}.
+	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#crearMovimiento(com.nttdata.ws.prueba.model.CrearMovimientoRequest)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -95,9 +97,9 @@ class MovimientoControllerTest {
 		clienteRepo.saveAll(clientes);	
 		
 		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
-		cuentaRepo.saveAll(cuentas);
-		
-		MovimientosType dto = objectMapper.readValue(requestMovimientosInput, new TypeReference<List<MovimientosType>>() {}).get(0);
+		cuentaRepo.saveAll(cuentas);	
+
+		MovimientosType dto = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<MovimientosType>>() {}).get(0);
 		this.mockMvc
 				.perform(MockMvcRequestBuilders.post("/movimientos").content(objectMapper.writeValueAsString(dto))
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
@@ -105,81 +107,236 @@ class MovimientoControllerTest {
 	}
 
 	/**
-	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#actualizarMovimiento(com.nttdata.ws.prueba.model.MovimientosClienteType)}.
+	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#actualizarMovimiento(com.nttdata.ws.prueba.model.MovimientosType)}.
 	 * @throws Exception 
+	 * @throws JsonProcessingException 
 	 */
 	@Test
-	void testActualizarMovimiento() throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	void testActualizarMovimiento() throws JsonProcessingException, Exception {
 		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
 		clienteRepo.saveAll(clientes);	
 		
 		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
-		cuentaRepo.saveAll(cuentas);
-		String numeroCta = "478758";
-		Date fechaInicio;
-		Date fechaFinal;
-
-		fechaInicio = dateFormat.parse("2022-10-27");
-		fechaFinal  = dateFormat.parse("2022-10-27");
-		    
+		cuentaRepo.saveAll(cuentas);	
 		
-		List<Movimientos> mvtsCliente = movtsRepo.consultarMovimientosPorNumeroDeCta(numeroCta, fechaInicio, fechaFinal);
-		Movimientos mvtCuenta = mvtsCliente.get(0);
-		mvtCuenta.setEstado(false);
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		
+		String numCta = "478758";
+		List<Movimientos> movimientosCta = mvtsRepo.consultarMovimientosPorCta(numCta);
+		Movimientos detalleMovimiento = movimientosCta.get(0);
+		detalleMovimiento.setEstado(false);
 		
 		this.mockMvc
-				.perform(MockMvcRequestBuilders.put("/cuentas").content(objectMapper.writeValueAsString(mvtCuenta))
+				.perform(MockMvcRequestBuilders.put("/movimientos").content(objectMapper.writeValueAsString(detalleMovimiento))
 						.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
 				.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#eliminarMovimiento(java.lang.String)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testEliminarMovimiento() {
-		fail("Not yet implemented");
+	void testEliminarMovimiento() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		
+		String numCta = "478758";
+		List<Movimientos> movimientosCta = mvtsRepo.consultarMovimientosPorCta(numCta);
+		Movimientos detalleMovimiento = movimientosCta.get(0);
+		 UUID id =  detalleMovimiento.getId();
+		 this.mockMvc
+			.perform(MockMvcRequestBuilders.delete("/movimientos/{id}", id.toString())
+					.accept(MediaType.APPLICATION_JSON))
+			.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarMovimientosPorFechas(java.util.Date, java.util.Date)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarMovimientosPorFechas() {
-		fail("Not yet implemented");
+	void testConsultarMovimientosPorFechas() throws Exception {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		
+		Date fechaDesde = formatter.parse("2022-10-27");
+		Date fechaHasta = formatter.parse("2022-10-27");
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/{fechaDesde}/{fechaHasta}", fechaDesde,fechaHasta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	void testConsultarMovimientosPorFechasNoContent() throws Exception {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date fechaDesde = formatter.parse("2022-10-27");
+		Date fechaHasta = formatter.parse("2022-10-27");
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/{fechaDesde}/{fechaHasta}", fechaDesde,fechaHasta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarMovimientosPorCliente(java.lang.String, java.util.Date, java.util.Date)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarMovimientosPorCliente() {
-		fail("Not yet implemented");
+	void testConsultarMovimientosPorCliente() throws Exception {
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numIdentificacion = "098254785";
+		String fechaDesde = "2022-10-27";
+		String fechaHasta = "2022-10-31";
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/cliente/{numIdentificacion}/{fechaDesde}/{fechaHasta}", numIdentificacion, fechaDesde, fechaHasta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());		
+		
+	}
+
+	/**
+	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarMovimientosPorCta(java.lang.String)}.
+	 * @throws Exception 
+	 */
+	@Test
+	void testConsultarMovimientosPorCta() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numCuenta = "478758";
+
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/cuenta/{numCuenta}", numCuenta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
+	}
+	
+	
+	@Test
+	void testConsultarMovimientosPorCtaNotFound() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numCuenta = "4787584444444";
+
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/cuenta/{numCuenta}", numCuenta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isNotFound());	
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarMovimientosPorNumeroDeCta(java.lang.String, java.util.Date, java.util.Date)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarMovimientosPorNumeroDeCta() {
-		fail("Not yet implemented");
+	void testConsultarMovimientosPorNumeroDeCta() throws Exception {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numIdentificacion = "098254785";
+		Date fechaDesde = formatter.parse("2022-10-27");
+		Date fechaHasta = formatter.parse("2022-10-31");
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/cliente/{numIdentificacion}/{fechaDesde}/{fechaHasta}", numIdentificacion, "2022-10-27","2022-10-31")
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarMovimientosPorCuentaTipoMovimiento(java.lang.String, com.nttdata.ws.prueba.model.TiposDeMovimiento)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarMovimientosPorCuentaTipoMovimiento() {
-		fail("Not yet implemented");
+	void testConsultarMovimientosPorCuentaTipoMovimiento() throws Exception {
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numCuenta = "478758";
+		TiposDeMovimiento tipoMovimiento = TiposDeMovimiento.DEPOSITO;
+
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/cuenta/tipo/{numeroCuenta}/{tipoMovimiento}", numCuenta, tipoMovimiento)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
 	}
 
 	/**
 	 * Test method for {@link com.nttdata.ws.prueba.controller.impl.MovimientoController#consultarEstadoCuenta(java.lang.String, java.util.Date, java.util.Date)}.
+	 * @throws Exception 
 	 */
 	@Test
-	void testConsultarEstadoCuenta() {
-		fail("Not yet implemented");
+	void testConsultarEstadoCuenta() throws Exception {
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<Cliente> clientes = objectMapper.readValue(requestClienteInput, new TypeReference<List<Cliente>>() {});
+		clienteRepo.saveAll(clientes);	
+		
+		List<Cuenta> cuentas = objectMapper.readValue(requestCuentaInput, new TypeReference<List<Cuenta>>() {});
+		cuentaRepo.saveAll(cuentas);	
+		
+		List<Movimientos> movimientos = objectMapper.readValue(requestMovimientoInput, new TypeReference<List<Movimientos>>() {});
+		mvtsRepo.saveAll(movimientos);
+		String numIdentificacion = "098254785";
+		Date fechaDesde = formatter.parse("2022-10-27");
+		Date fechaHasta = formatter.parse("2022-10-27");
+		
+		this.mockMvc
+		.perform(MockMvcRequestBuilders.get("/movimientos/reportes/{identificacion}/{fechaDesde}/{fechaHasta}", numIdentificacion, fechaDesde,fechaHasta)
+				.accept(MediaType.APPLICATION_JSON))
+		.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk());	
 	}
 
 	/**

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.nttdata.ws.prueba.model.TiposDeMovimiento;
 import com.nttdata.ws.prueba.repository.model.Movimientos;
 
 /**
@@ -27,7 +28,8 @@ public interface IMovimientosRepository extends JpaRepository<Movimientos, UUID>
 			+ "where u.numero_de_cuenta = :cuenta and u.estado = true order by u.fecha desc  limit 1", nativeQuery = true)
 	Double consultaSaldoUltimaMovimiento(@Param("cuenta") String cuenta);
 	
-	@Query(value = "SELECT u.saldo_disponible FROM t_movimientos u WHERE u.numero_de_cuenta = :cuenta order by fecha desc  limit 1", nativeQuery = true)
+	@Query(value = "SELECT u.saldo_disponible FROM t_movimientos u WHERE u.numero_de_cuenta = :cuenta "
+			+ "order by fecha desc  limit 1", nativeQuery = true)
 	String consultaUltimoMovimiento(@Param("cuenta") String cuenta);
 
 	
@@ -39,8 +41,16 @@ public interface IMovimientosRepository extends JpaRepository<Movimientos, UUID>
 			@Param("fechaHasta") Date fechaFin);
 	
 	
-	@Query(value = "select u.* from t_movimientos u where u.numero_de_cuenta = :numCuenta and u.estado = true", nativeQuery = true)
+	@Query(value = "select u.* from t_movimientos u where u.numero_de_cuenta = :numCuenta and u.estado = true "
+			+ "order by u.fecha desc", nativeQuery = true)
 	List<Movimientos> consultarMovimientosPorCta(@Param("numCuenta") String numCuenta);
+	
+	@Query(value = "select u.* from t_movimientos u where u.numero_de_cuenta = :numCuenta and u.estado = true "
+			+ "and u.tipo_mov = :#{#tipoMovimiento.name()} "
+			+ "order by u.fecha desc", nativeQuery = true)
+	List<Movimientos> consultaTipoMovimientosCta(@Param("numCuenta") String numCuenta, @Param("tipoMovimiento") TiposDeMovimiento tipoMovimiento);
+	
+	
 	
 	@Query(value = "select u.* from t_movimientos u where u.numero_de_cuenta = :numCuenta"
 			+ " and u.fecha \\:\\:DATE between :fechaDesde and :fechaHasta \\:\\:DATE order by u.fecha desc", nativeQuery = true)
