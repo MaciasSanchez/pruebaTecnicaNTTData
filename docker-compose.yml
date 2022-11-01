@@ -13,9 +13,9 @@ services:
     networks: 
       - nttdata-prueba
     depends_on: 
-      - db-postgres
+      - nttdata-db-postgres-api
 
-  db-postgres:
+  nttdata-db-postgres-api:
     container_name: nttdata-db-postgres-api
     image: postgres
     networks:
@@ -23,6 +23,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=servicioDB
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=admin
+        - POSTGRES_DB=servicioDB
