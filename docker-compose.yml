@@ -4,10 +4,10 @@ networks:
   nttdata-prueba:
 
 services: 
-  nttdata-apirest:
-    container_name: nttdata-apirest
-    image: nttdata-apirest
-    build: ./
+  nttdata-ws-prueba-1.0.0:
+    container_name: nttdata-ws-prueba-1.0.0
+    image: 'nttdata-ws-prueba-1.0.0:lastest'
+    build: ./apirest/
     ports: 
       - "8003:8003"
     networks: 
