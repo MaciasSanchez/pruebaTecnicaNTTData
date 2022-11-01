@@ -6,6 +6,7 @@ package com.nttdata.ws.prueba.model;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +34,7 @@ public class MovimientosType {
 	@NotNull(message = "el campo <numero de cuenta> no puede estar vacío")
 	private String numeroDeCuenta;
 	private TiposDeCuenta tipo;
+	@DecimalMin(value = "0.00", message = "Debe ingresar el saldo mínimo")
 	private double saldoInicial;
 	private boolean estado;
 	private TiposDeMovimiento tipoMovimiento;

@@ -47,7 +47,7 @@ public class ClienteController implements IClienteController {
 			LOG.info("INICIA PROCESO DE CREAR CLIENTE");
 			ClienteType result = clienteSvc.crearCliente(body);
 			respuestaCrear = ClienteValidator.validarResultadoaByCreate(result);
-		} catch (Exception e) {
+		}catch (Exception e) {
 			LOG.error("ERROR PROCESO DE CREAR CLIENTE {}",e.getMessage());
 			return respuestaCrear = new ResponseEntity<>(
 					new RespuestaType().codigoRespuesta("500").descripcion(MensajesDelServicio.ERROR_INTERNO),

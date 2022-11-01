@@ -44,8 +44,8 @@ public interface IClienteController {
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = RespuestaType.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = RespuestaType.class))) })
 	@RequestMapping(value = "/clientes", produces = "application/json; charset=UTF-8", consumes = "application/json; charset=UTF-8", method = RequestMethod.POST)
-	ResponseEntity<?> crearCliente(
-			@Parameter(in = ParameterIn.DEFAULT, description = "Cliente", required = true, schema = @Schema()) @Valid  @RequestBody CrearUsuarioRequest body);
+	@Parameter(in = ParameterIn.DEFAULT, description = "Cliente", required = true, schema = @Schema())
+	ResponseEntity<?> crearCliente(@RequestBody CrearUsuarioRequest body);
 
 	/**
 	 * Operación PUT para la actualización de cliente

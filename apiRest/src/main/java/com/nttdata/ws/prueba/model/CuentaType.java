@@ -25,7 +25,7 @@ public class CuentaType {
 
 	private UUID id;
 	@Pattern(regexp = "[0-9]*")
-	@NotNull(message = "numero de identificación no puede estar vacío")
+	@NotNull(message = "el campo numero de cuenta no puede estar vacío")
 	private String numeroDeCuenta;
 	@NotNull(message = "numero de identificación no puede estar vacío")
 	private String identificacion;
