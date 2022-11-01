@@ -1,0 +1,28 @@
+version: "3.4"
+
+networks: 
+  nttdata-prueba:
+
+services: 
+  nttdata-apirest:
+    container_name: nttdata-apirest
+    image: nttdata-apirest
+    build: ./
+    ports: 
+      - "8003:8003"
+    networks: 
+      - nttdata-prueba
+    depends_on: 
+      - db-postgres
+
+  db-postgres:
+    container_name: nttdata-db-postgres-api
+    image: postgres
+    networks:
+      - nttdata-prueba
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=servicioDB
